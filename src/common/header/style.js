@@ -23,6 +23,11 @@ export const Nav = styled.div `
   width: 960px;
   height: 100%;
   margin: 0 auto;
+  &::after {
+    content: "";
+    display: table;
+    clear: both;
+  }
 `
 
 export const NavItem = styled.div `
@@ -43,6 +48,27 @@ export const NavItem = styled.div `
 
 `
 
+export const SearchWrapper = styled.div `
+  float: left;
+  position: relative;
+  .iconfont {
+    position: absolute;
+    right: 25px;
+    bottom: 12px;
+    width: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+    &.focused {
+      background: #ccc;
+      color: #fff;
+    }
+  }
+
+`
+
+
 export const NavSearch = styled.input.attrs({
   placeholder: '搜索'
 }) `
@@ -59,6 +85,70 @@ export const NavSearch = styled.input.attrs({
   &::placeholder {
     color: #999;
   }
+  &.focused {
+    width: 350px;
+   
+  }
+  &.slider-enter {
+    transition: all .4s ease-out;
+  }
+  &.slider-enter-active {
+      width: 350px;
+  }
+  &.slider-exit {
+      transition: all .4s ease-out;
+  }
+  &.slider-exit-active {
+      width: 240px;
+  }
+`
+export const SearchInfo = styled.div `
+  position: absolute;
+  left: 40px;
+  top: 58px;
+  width: 200px;
+  padding: 20px;
+  box-shadow: 0 0 8px rgba(0,0,0,.2);
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    border: 10px solid transparent;
+    border-bottom-color: #fff;
+  }
+`
+export const  SearchInfoTitle = styled.div `
+  margin-bottom: 15px;
+  line-height: 20px;
+  color: #969696;
+  font-size: 14px;
+`
+export const SearchInfoSwicth = styled.div `
+  float: right;
+  font-size: 12px;
+  cursor: pointer;
+`
+
+export const SearchInfoList = styled.div `
+  &::after {
+    content: "";
+    display: block;
+    clear: both;
+  }
+`
+export const SearchInfoItem = styled.a `
+  display: block;
+  float: left;
+  font-size: 14px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  padding: 0 5px;
+  line-height: 20px;
+  color: #787878;
+  border: 1px solid #ddd;
+  border-radius: 3px;
 `
 export const Addition = styled.div `
   position: absolute;
@@ -74,16 +164,22 @@ export const Button = styled.button `
   border-radius: 19px;
   margin-right: 20px;
   margin-top: 9px;
-  padding: 0 20px;
   border: 1px solid #ec6149;
+  outline: none;
 
   &.reg {
     color: #ec6149;
     background: #fff;
+    padding: 0 30px;
   }
 
   &.writting {
     background:  #ec6149;
     color: #fff;
+    padding: 0 20px;
+  }
+  
+  .iconfont{
+    line-height: 20px;
   }
 `
