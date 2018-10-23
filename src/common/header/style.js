@@ -28,6 +28,7 @@ export const Nav = styled.div `
     display: table;
     clear: both;
   }
+  
 `
 
 export const NavItem = styled.div `
@@ -110,6 +111,7 @@ export const SearchInfo = styled.div `
   padding: 20px;
   box-shadow: 0 0 8px rgba(0,0,0,.2);
   user-select: none;
+  background: #fff;
   &::before {
     content: "";
     display: block;
@@ -125,6 +127,7 @@ export const  SearchInfoTitle = styled.div `
   line-height: 20px;
   color: #969696;
   font-size: 14px;
+  
 `
 export const SearchInfoSwicth = styled.div `
   float: right;

@@ -1,6 +1,10 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
+
 import Header from './common/header';
+import Home from './pages/home';
+import Detail from './pages/detail';
+
 import store from './store';
 import { Provider } from 'react-redux';
 
@@ -15,8 +19,8 @@ class App extends Component {
           <Header />
           <BrowserRouter>
             <Fragment>
-              <Route path="/" exact render={ ()=> <div>首页</div>} />
-              <Route path="/detail" exact render={ ()=> <div>详细</div>}/>
+              <Route path="/" exact  component={Home} />
+              <Route path="/detail" exact  component={Detail} />
             </Fragment>
           </BrowserRouter>
           <GlobalStyle />
