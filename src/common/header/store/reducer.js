@@ -4,7 +4,10 @@ import { fromJS } from 'immutable';
 
 const defaultState = fromJS({
   focused: false,
+  mouseIn: false,
   hotSearchList: [],
+  page: 1,
+  totalPage: 1,
 }) 
 
 export default (state = defaultState, action) => {

@@ -25,6 +25,7 @@ import {
 class Header extends Component {
 
   render() {
+    const { focused, handleInputFocus, handleInputBlur, hotSearchList } = this.props;
     return (
       <HeaderWrapper>
         <Logo />
@@ -37,18 +38,18 @@ class Header extends Component {
           </NavItem>
           <SearchWrapper>
             <CSSTransition
-              in={this.props.focused}
+              in={focused}
               timeout={2000}
               classNames="slider"
             >
               <NavSearch
-                className={this.props.focused ? 'focused' : ''}
-                onFocus={this.props.handleInputFocus}
-                onBlur={this.props.handleInputBlur}
+                className={focused ? 'focused' : ''}
+                onFocus={ () => { handleInputFocus(hotSearchList) } }
+                onBlur={handleInputBlur}
               />
             </CSSTransition>
             <i
-              className={this.props.focused ? 'focused iconfont' : 'iconfont'}
+              className={focused ? 'focused iconfont zoom' : 'iconfont zoom'}
             >
               &#xe623;
             </i>
@@ -67,43 +68,90 @@ class Header extends Component {
   }
 
   getSearchList() {
-
-    if (this.props.focused) {
+    const { focused, mouseIn,hotSearchList, page, totalPage, handleMouseEnter, handleMouseLeave, handleChangePage } = this.props;
+    const start = (page - 1) * 10;
+    const end = page === totalPage ? hotSearchList.length : page * 10;
+    const newList = hotSearchList.slice(start, end);
+    if (focused || mouseIn) {
       return (
-        <SearchInfo>
+        <SearchInfo
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <SearchInfoTitle>
             热门搜索
-            <SearchInfoSwicth>换一批</SearchInfoSwicth>
+            <SearchInfoSwicth onClick={ () => { handleChangePage(page, totalPage, this.spinIcon) }}>
+              <i  ref= {(icon) => { this.spinIcon = icon;}}className='iconfont spin'>&#xe851;</i>
+              换一批
+            </SearchInfoSwicth>
           </SearchInfoTitle>
           <SearchInfoList>
             {
-              this.props.hotSearchList.map((item) => {
+              newList.map((item) => {
                 return <SearchInfoItem key={item}>{item}</SearchInfoItem>
               })
             }
           </SearchInfoList>
         </SearchInfo>
       )
+    }else {
+      return null;
     }
-    return null;
+    
   }
 }
 
 const mapStateToProps = (state) => {
   return {
     focused: state.getIn(['header', 'focused']),
+    mouseIn: state.getIn(['header','mouseIn']),
     hotSearchList: state.getIn(['header', 'hotSearchList']),
+    page: state.getIn(['header', 'page']),
+    totalPage: state.getIn(['header', 'totalPage']),
+
   }
 }
 
 const mapDsipatchToProps = (dispatch) => {
   return {
-    handleInputFocus() {
-      dispatch(actionCreator.getHotSearchList())
+
+    handleInputFocus(hotSearchList) {
+      
+      (hotSearchList.size <= 0) && dispatch(actionCreator.getHotSearchList())
       dispatch(actionCreator.createSearchFocusAction())
+
     },
+
     handleInputBlur() {
       dispatch(actionCreator.createSearchBlurAction())
+    },
+
+    handleMouseEnter() {
+     
+      dispatch(actionCreator.createMouseEnterHotSearchPanelAction())
+    },
+
+    handleMouseLeave() {
+     
+      dispatch(actionCreator.createMouseLeaveHotSearchPanelAction())
+    },
+
+    handleChangePage(page, totalPage, spin) {
+      
+      let originAngle = spin.style.transform.replace(/[^0-9]/ig,'')
+
+      if(originAngle) {
+        originAngle  = parseInt(originAngle, 10)
+      }else {
+        originAngle  = 0
+      }
+      spin.style.transform = `rotate(${originAngle + 360}deg)`
+
+      if(page < totalPage) {
+        dispatch(actionCreator.createChangeHotSearchPanelPage(page + 1))
+      }else{
+        dispatch(actionCreator.createChangeHotSearchPanelPage(1))
+      }
     }
   }
 }
